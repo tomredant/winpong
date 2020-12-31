@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="resources/fonts/NES-Chimera/NES-Chimera.ttf">resources/fonts/NES-Chimera/NES-Chimera.ttf</file>
+		<file alias="resources/sounds/paddle_hit.wav">resources/sounds/paddle_hit.wav</file>
+        <file alias="resources/sounds/wall_hit.wav">resources/sounds/wall_hit.wav</file>
+        <file alias="resources/sounds/score_update.wav">resources/sounds/score_update.wav</file>
+    </qresource>
+</RCC>

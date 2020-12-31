@@ -7,7 +7,8 @@
 #include "src/ball.h"
 #include "src/paddle.h"
 #include "src/utilities.h"
-
+#include <QFile>
+#include <QDir>
 // Screen resolution.
 const int Pong::SCREEN_WIDTH = 640;
 const int Pong::SCREEN_HEIGHT = 480;
@@ -20,7 +21,7 @@ Pong::Pong(int argc, char *argv[]) {
     SDL_ShowCursor(0);
 
     // Create window and renderer.
-    window = SDL_CreateWindow("Pong",
+    window = SDL_CreateWindow("Winpong",
             SDL_WINDOWPOS_UNDEFINED,  // Centered window.
             SDL_WINDOWPOS_UNDEFINED,  // Centered window.
             SCREEN_WIDTH,
@@ -43,13 +44,22 @@ Pong::Pong(int argc, char *argv[]) {
     Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 1024);
 
     // Load paddle sound.
-    paddle_sound = Mix_LoadWAV("resources/sounds/paddle_hit.wav");
+    QFile paddleHitFile(":/resources/sounds/paddle_hit.wav");
+    QString paddleHitFilePath = QDir::temp().absolutePath() + "/" + paddleHitFile.fileName().split("/").last();
+    paddleHitFile.copy(paddleHitFilePath);
+    paddle_sound = Mix_LoadWAV(paddleHitFilePath.toUtf8().constData());
 
     // Load wall sound.
-    wall_sound = Mix_LoadWAV("resources/sounds/wall_hit.wav");
+    QFile wallHitFile(":/resources/sounds/wall_hit.wav");
+    QString wallHitFilePath = QDir::temp().absolutePath() + "/" + wallHitFile.fileName().split("/").last();
+    wallHitFile.copy(wallHitFilePath);
+    wall_sound = Mix_LoadWAV(wallHitFilePath.toUtf8().constData());
 
-    // Load score sound.
-    score_sound = Mix_LoadWAV("resources/sounds/score_update.wav");
+    // Load score_update sound.
+    QFile scoreUpdateFile(":/resources/sounds/score_update.wav");
+    QString scoreUpdateFilePath = QDir::temp().absolutePath() + "/" + scoreUpdateFile.fileName().split("/").last();
+    scoreUpdateFile.copy(scoreUpdateFilePath);
+    score_sound = Mix_LoadWAV(scoreUpdateFilePath.toUtf8().constData());
 
     // Controllers.
     if (argc == 2) {
@@ -83,7 +93,7 @@ Pong::Pong(int argc, char *argv[]) {
     // Fonts.
     TTF_Init();  // Initialize font.
     font_color = {255, 255, 255, 255};
-    font_name = "resources/fonts/NES-Chimera/NES-Chimera.ttf";
+    font_name = ":/resources/fonts/NES-Chimera/NES-Chimera.ttf";
     font_image_launch = renderText("Press SPACE to start",
             font_name, font_color, 16, renderer);
 

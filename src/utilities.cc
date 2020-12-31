@@ -4,7 +4,8 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
-
+#include <QFile>
+#include <QDir>
 void renderTexture(SDL_Texture* tex,
         SDL_Renderer* ren, SDL_Rect dst, SDL_Rect *clip) {
     SDL_RenderCopy(ren, tex, clip, &dst);
@@ -28,7 +29,10 @@ void renderTexture(SDL_Texture* tex,
 SDL_Texture* renderText(const std::string &message,
     const std::string &fontFile, SDL_Color color,
     int fontSize, SDL_Renderer* renderer) {
-    TTF_Font* font = TTF_OpenFont(fontFile.c_str(), fontSize);
+    QFile fontF(QString::fromStdString(fontFile));
+    QString fontPath = QDir::temp().absolutePath() + "/" + fontF.fileName().split("/").last();
+    fontF.copy(fontPath);
+    TTF_Font* font = TTF_OpenFont(fontPath.toStdString().c_str(), fontSize);
 
     SDL_Surface* surf = TTF_RenderText_Blended(font, message.c_str(), color);
 
