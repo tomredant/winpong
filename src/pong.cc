@@ -99,14 +99,20 @@ Pong::Pong(int argc, char *argv[]) {
 
     // Game status.
     exit = false;
+
+    // Initialize potentially non-used pointers to nullptr.
+    font_image_winner = nullptr;
+    font_image_restart = nullptr;
 }
 
 Pong::~Pong() {
     // Destroy textures.
     SDL_DestroyTexture(font_image_left_score);
     SDL_DestroyTexture(font_image_right_score);
-    SDL_DestroyTexture(font_image_winner);
-    SDL_DestroyTexture(font_image_restart);
+    if(font_image_winner != nullptr)
+        SDL_DestroyTexture(font_image_winner);
+    if(font_image_restart != nullptr)
+        SDL_DestroyTexture(font_image_restart);
     SDL_DestroyTexture(font_image_launch);
 
     // Free sound effects.
